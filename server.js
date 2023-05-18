@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const cors = require("cors"); // <-- require the cors package
 const { router: authRouter, protect } = require("./routes/auth");
 const businessCardRoutes = require("./routes/cardroutes");
 const userRoutes = require("./routes/userRoutes");
@@ -9,18 +10,22 @@ require("dotenv").config();
 // Initialize express app
 const app = express();
 
+// Use the cors middleware
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://moosaproject.onrender.com"], // <-- use cors middleware
+  })
+);
+
 // Set up body-parser middleware to parse request bodies
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Set up MongoDB connection using Mongoose
-mongoose.connect(
-  "mongodb+srv://sabbasraza17:Abbas0343.@cluster0.hl4il1e.mongodb.net/",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
+mongoose.connect("mongodb://0.0.0.0/qr_contact", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 const db = mongoose.connection;
 
